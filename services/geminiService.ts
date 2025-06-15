@@ -8,13 +8,13 @@ try {
   // Per guidelines, API_KEY is obtained exclusively from process.env.API_KEY.
   // Assume process.env.API_KEY is pre-configured, valid, and accessible.
   // We explicitly check its existence and type here for robustness within this module.
-  const apiKeyFromEnv = (typeof process !== 'undefined' && process.env) ? process.env.API_KEY : undefined;
+  const apiKeyFromEnv = import.meta.env.VITE_GEMINI_API_KEY;
 
   if (typeof apiKeyFromEnv !== 'string' || apiKeyFromEnv.trim() === '') {
-    // Set the error and throw it to be caught by the catch block.
-    apiKeyInitializationError = new Error("Gemini API Key (process.env.API_KEY) is missing, not a string, or empty. Please ensure it is configured in the environment.");
+    apiKeyInitializationError = new Error("Gemini API Key (VITE_GEMINI_API_KEY) is missing or invalid. Please ensure it is correctly set in the environment.");
     throw apiKeyInitializationError;
   }
+
   
   ai = new GoogleGenAI({ apiKey: apiKeyFromEnv });
 
